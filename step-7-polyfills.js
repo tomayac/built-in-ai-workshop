@@ -1,5 +1,21 @@
 import { ARTICLE, setBadge, setOutput, busy } from './shared.js';
 
+const keyInput = document.getElementById('polyfills-api-key');
+
+// localStorage is fine for this key — it never leaves the user's own browser.
+const STORAGE_KEY = 'gemini-api-key';
+const savedKey = localStorage.getItem(STORAGE_KEY);
+if (savedKey) keyInput.value = savedKey;
+
+keyInput.addEventListener('input', () => {
+  const val = keyInput.value.trim();
+  if (val) {
+    localStorage.setItem(STORAGE_KEY, val);
+  } else {
+    localStorage.removeItem(STORAGE_KEY);
+  }
+});
+
 document
   .getElementById('polyfills-backend')
   .addEventListener('change', (event) => {
