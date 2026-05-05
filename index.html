@@ -3,10 +3,85 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Built-in AI Workshop — Starter</title>
+    <title>Built-in AI Workshop — Instructions</title>
     <style>
       :root {
-        --accent: #34a853;
+        --accent: #e37400;
+      }
+      .prose {
+        line-height: 1.7;
+        font-size: 0.92rem;
+        color: #202124;
+      }
+      .prose h1 {
+        display: none;
+      }
+      .prose h2 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin: 22px 0 6px;
+        color: var(--accent);
+      }
+      .prose h3 {
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin: 16px 0 4px;
+      }
+      .prose p {
+        margin-bottom: 10px;
+      }
+      .prose ul,
+      .prose ol {
+        padding-left: 20px;
+        margin-bottom: 10px;
+      }
+      .prose li {
+        margin-bottom: 4px;
+      }
+      .prose a {
+        color: var(--accent);
+      }
+      .prose code {
+        background: #f1f3f4;
+        padding: 1px 5px;
+        border-radius: 3px;
+        font-size: 0.82rem;
+      }
+      .prose pre {
+        background: #f1f3f4;
+        border-radius: 6px;
+        padding: 12px 14px;
+        overflow-x: auto;
+        margin-bottom: 12px;
+      }
+      .prose pre code {
+        background: none;
+        padding: 0;
+        font-size: 0.82rem;
+      }
+      .prose table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.86rem;
+        margin-bottom: 12px;
+      }
+      .prose th {
+        background: #f1f3f4;
+        text-align: left;
+        padding: 7px 10px;
+        font-weight: 600;
+      }
+      .prose td {
+        padding: 7px 10px;
+      }
+      .prose tr {
+        border-bottom: 1px solid #e8eaed;
+      }
+      #loading {
+        color: #9aa0a6;
+        font-style: italic;
+        font-size: 0.88rem;
+        padding: 20px 0;
       }
     </style>
     <link rel="stylesheet" href="styles.css" />
@@ -14,548 +89,13 @@
   <body>
     <header>
       <h1>Chrome Built-in AI Workshop</h1>
-      <span class="badge">STARTER</span>
+      <span class="badge">INSTRUCTIONS</span>
     </header>
 
     <div class="container">
-      <details class="article-box">
-        <summary>
-          📄 Sample article — "Barcelona: Gaudí, Seafood, Ramblas, and a Few
-          Things to Watch Out For"
-        </summary>
-        <pre id="article-content"></pre>
-      </details>
-
-      <nav class="tabs" role="tablist" aria-label="API steps">
-        <button
-          class="tab-button active"
-          role="tab"
-          id="tab-button-summarizer"
-          data-tab="summarizer"
-          aria-controls="tab-summarizer"
-          aria-selected="true"
-        >
-          1. Summarizer
-        </button>
-        <button
-          class="tab-button"
-          role="tab"
-          id="tab-button-prompt-structured"
-          data-tab="prompt-structured"
-          aria-controls="tab-prompt-structured"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          2. Prompt (Structured)
-        </button>
-        <button
-          class="tab-button"
-          role="tab"
-          id="tab-button-prompt-multimodal"
-          data-tab="prompt-multimodal"
-          aria-controls="tab-prompt-multimodal"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          3. Prompt (Multimodal)
-        </button>
-        <button
-          class="tab-button"
-          role="tab"
-          id="tab-button-writer"
-          data-tab="writer"
-          aria-controls="tab-writer"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          4. Writer
-        </button>
-        <button
-          class="tab-button"
-          role="tab"
-          id="tab-button-rewriter"
-          data-tab="rewriter"
-          aria-controls="tab-rewriter"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          5. Rewriter
-        </button>
-        <button
-          class="tab-button"
-          role="tab"
-          id="tab-button-translator"
-          data-tab="translator"
-          aria-controls="tab-translator"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          6. Translator
-        </button>
-        <button
-          class="tab-button"
-          role="tab"
-          id="tab-button-polyfills"
-          data-tab="polyfills"
-          aria-controls="tab-polyfills"
-          aria-selected="false"
-          tabindex="-1"
-        >
-          7. Polyfills
-        </button>
-      </nav>
-
-      <!-- 1. SUMMARIZER -->
-      <div
-        class="panel active"
-        id="tab-summarizer"
-        role="tabpanel"
-        aria-labelledby="tab-button-summarizer"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Summarizer API</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="summarizer-badge"
-              >checking…</span
-            >
-          </div>
-          <p class="card-description">
-            Condenses the sample article. Choose the output <em>type</em> and
-            <em>length</em>, then click Summarize. Streams the result via
-            <code>summarizeStreaming()</code>.
-          </p>
-          <div class="controls">
-            <div class="control">
-              <label>Type</label>
-              <select id="summarizer-type">
-                <option value="headline">headline</option>
-                <option value="teaser">teaser</option>
-                <option value="key-points" selected>key-points</option>
-                <option value="tldr">tldr</option>
-              </select>
-            </div>
-            <div class="control">
-              <label>Length</label>
-              <select id="summarizer-length">
-                <option value="short" selected>short</option>
-                <option value="medium">medium</option>
-                <option value="long">long</option>
-              </select>
-            </div>
-            <div class="control">
-              <label>Format</label>
-              <select id="summarizer-format">
-                <option value="plain-text" selected>plain-text</option>
-                <option value="markdown">markdown</option>
-              </select>
-            </div>
-            <button class="button button-primary" id="summarizer-button">
-              ✨ Summarize
-            </button>
-          </div>
-          <div class="download-progress" id="summarizer-progress">
-            <progress></progress>
-            <span>Downloading model…</span>
-          </div>
-          <div class="output-label">Output</div>
-          <div class="output empty" id="summarizer-output">
-            Output will appear here…
-          </div>
-        </div>
-      </div>
-
-      <!-- 2. PROMPT — STRUCTURED OUTPUT -->
-      <div
-        class="panel"
-        id="tab-prompt-structured"
-        role="tabpanel"
-        aria-labelledby="tab-button-prompt-structured"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Prompt API — Structured Output</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="prompt-structured-badge"
-              >checking…</span
-            >
-          </div>
-          <p class="card-description">
-            Generates tags for the article. A
-            <code>responseConstraint</code> (JSON Schema with an
-            <code>enum</code>) guarantees the model only picks from the
-            predefined list.
-          </p>
-          <p style="font-size: 0.84rem; margin-bottom: 14px; color: #5f6368">
-            Allowed tags:
-            <strong
-              >Adventure · Barcelona · Beach · City · Coast · Culture · Europe ·
-              Food · Gaudi · History · Relaxation · Sagrada Familia · Spain ·
-              Travel</strong
-            >
-          </p>
-          <button class="button button-primary" id="prompt-structured-button">
-            ✨ Generate Tags
-          </button>
-          <div class="download-progress" id="prompt-structured-progress">
-            <progress></progress>
-            <span>Downloading model…</span>
-          </div>
-          <div class="output-label">Generated Tags</div>
-          <div class="tags-output" id="prompt-structured-output">
-            <span style="color: #9aa0a6; font-style: italic; font-size: 0.88rem"
-              >Tags will appear here…</span
-            >
-          </div>
-        </div>
-      </div>
-
-      <!-- 3. PROMPT — MULTIMODAL -->
-      <div
-        class="panel"
-        id="tab-prompt-multimodal"
-        role="tabpanel"
-        aria-labelledby="tab-button-prompt-multimodal"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Prompt API — Multimodal Input</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="prompt-multimodal-badge"
-              >checking…</span
-            >
-          </div>
-          <p class="card-description">
-            Upload a travel photo. The model generates accessible
-            <strong>alt text</strong> and an engaging
-            <strong>caption</strong> using <code>{ type: "image" }</code> input
-            and a <code>responseConstraint</code>.
-          </p>
-          <input
-            type="file"
-            accept="image/*"
-            id="image-input"
-            style="display: none"
-          />
-          <div class="image-upload" id="image-area">
-            <p>📸 Click or drag &amp; drop a travel photo here</p>
-          </div>
-          <button
-            class="button button-primary"
-            id="prompt-multimodal-button"
-            disabled
-          >
-            ✨ Generate Alt Text &amp; Caption
-          </button>
-          <div class="download-progress" id="prompt-multimodal-progress">
-            <progress></progress>
-            <span>Downloading model…</span>
-          </div>
-          <div class="output-label">Alt Text</div>
-          <div class="output empty" id="prompt-multimodal-alt-text">
-            Will appear here…
-          </div>
-          <div class="output-label" style="margin-top: 10px">Caption</div>
-          <div class="output empty" id="prompt-multimodal-caption">
-            Will appear here…
-          </div>
-        </div>
-      </div>
-
-      <!-- 4. WRITER -->
-      <div
-        class="panel"
-        id="tab-writer"
-        role="tabpanel"
-        aria-labelledby="tab-button-writer"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Writer API</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="writer-badge"
-              >checking…</span
-            >
-          </div>
-          <p class="card-description">
-            Expands bullet-point notes into a full travel blog post via
-            <code>Writer.create()</code> and <code>writeStreaming()</code>.
-          </p>
-          <label
-            style="
-              font-size: 0.7rem;
-              font-weight: 700;
-              color: #5f6368;
-              text-transform: uppercase;
-              letter-spacing: 0.06em;
-              display: block;
-              margin-bottom: 6px;
-            "
-            >Bullet Points / Notes</label
-          >
-          <textarea id="writer-input" rows="5">
-- First time in Barcelona — overwhelming in the best way
-- Tried to visit Parc Güell but couldn't get tickets (booked too late!)
-- Amazing seafood at a tiny tapas bar near Barceloneta beach
-- Sagrada Família was absolutely breathtaking — worth every euro
-- Pickpocket attempt on the Ramblas — caught it just in time</textarea
-          >
-          <div class="controls">
-            <div class="control">
-              <label>Tone</label>
-              <select id="writer-tone">
-                <option value="formal">formal</option>
-                <option value="neutral" selected>neutral</option>
-                <option value="casual">casual</option>
-              </select>
-            </div>
-            <div class="control">
-              <label>Length</label>
-              <select id="writer-length">
-                <option value="short">short</option>
-                <option value="medium" selected>medium</option>
-                <option value="long">long</option>
-              </select>
-            </div>
-            <button class="button button-primary" id="writer-button">
-              ✨ Write Post
-            </button>
-          </div>
-          <div class="download-progress" id="writer-progress">
-            <progress></progress>
-            <span>Downloading model…</span>
-          </div>
-          <div class="output-label">Generated Post</div>
-          <div class="output empty" id="writer-output">
-            Output will appear here…
-          </div>
-        </div>
-      </div>
-
-      <!-- 5. REWRITER -->
-      <div
-        class="panel"
-        id="tab-rewriter"
-        role="tabpanel"
-        aria-labelledby="tab-button-rewriter"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Rewriter API</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="rewriter-badge"
-              >checking…</span
-            >
-          </div>
-          <p class="card-description">
-            Rewrites the article with a different tone or length via
-            <code>Rewriter.create()</code> and <code>rewriteStreaming()</code>.
-          </p>
-          <label
-            style="
-              font-size: 0.7rem;
-              font-weight: 700;
-              color: #5f6368;
-              text-transform: uppercase;
-              letter-spacing: 0.06em;
-              display: block;
-              margin-bottom: 6px;
-            "
-            >Text to Rewrite</label
-          >
-          <textarea id="rewriter-input" rows="8"></textarea>
-          <div class="controls">
-            <div class="control">
-              <label>Tone</label>
-              <select id="rewriter-tone">
-                <option value="as-is" selected>as-is</option>
-                <option value="more-formal">more-formal</option>
-                <option value="more-casual">more-casual</option>
-              </select>
-            </div>
-            <div class="control">
-              <label>Length</label>
-              <select id="rewriter-length">
-                <option value="as-is" selected>as-is</option>
-                <option value="shorter">shorter</option>
-                <option value="longer">longer</option>
-              </select>
-            </div>
-            <button class="button button-primary" id="rewriter-button">
-              ✨ Rewrite
-            </button>
-          </div>
-          <div class="download-progress" id="rewriter-progress">
-            <progress></progress>
-            <span>Downloading model…</span>
-          </div>
-          <div class="output-label">Rewritten Text</div>
-          <div class="output empty" id="rewriter-output">
-            Output will appear here…
-          </div>
-        </div>
-      </div>
-
-      <!-- 7. POLYFILLS -->
-      <div
-        class="panel"
-        id="tab-polyfills"
-        role="tabpanel"
-        aria-labelledby="tab-button-polyfills"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Polyfills — Universal Compatibility</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="polyfills-badge"
-              >not yet run</span
-            >
-          </div>
-          <p class="card-description">
-            The same Built-in AI APIs work in any browser via
-            <a
-              href="https://www.npmjs.com/package/prompt-api-polyfill"
-              target="_blank"
-              rel="noopener"
-              ><code>prompt-api-polyfill</code></a
-            >
-            and
-            <a
-              href="https://www.npmjs.com/package/built-in-ai-task-apis-polyfills"
-              target="_blank"
-              rel="noopener"
-              ><code>built-in-ai-task-apis-polyfills</code></a
-            >. Polyfills are loaded <em>only</em> when native support is absent
-            — on Chrome with built-in AI the native APIs win automatically. Uses
-            the <strong>Writer API</strong> (not yet natively shipping) to write
-            a social media post from the sample article.
-          </p>
-          <div class="controls" style="margin-bottom: 14px">
-            <div class="control">
-              <label>Backend</label>
-              <select id="polyfills-backend">
-                <option value="gemini">Gemini (cloud)</option>
-                <option value="transformers">
-                  Transformers.js (in-browser)
-                </option>
-              </select>
-            </div>
-          </div>
-          <div id="polyfills-key-row" style="margin-bottom: 14px">
-            <div class="control" style="width: 100%">
-              <label
-                >Gemini API Key — get one at
-                <a
-                  href="https://aistudio.google.com/app/apikey"
-                  target="_blank"
-                  rel="noopener"
-                  >aistudio.google.com/app/apikey</a
-                ></label
-              >
-              <input
-                type="password"
-                id="polyfills-api-key"
-                placeholder="AIza…"
-                style="
-                  padding: 6px 8px;
-                  border: 1.5px solid #dadce0;
-                  border-radius: 6px;
-                  font-size: 0.86rem;
-                  background: white;
-                  color: #202124;
-                  width: 100%;
-                "
-              />
-            </div>
-          </div>
-          <p
-            id="polyfills-transformers-note"
-            style="
-              display: none;
-              font-size: 0.84rem;
-              color: #5f6368;
-              margin-bottom: 14px;
-              padding: 10px 12px;
-              background: #f8f9fa;
-              border-radius: 6px;
-              border: 1.5px solid #e8eaed;
-            "
-          >
-            Transformers.js runs entirely in your browser using WebGPU. The
-            first run downloads a model (hundreds of MB) — subsequent runs use
-            the browser cache. No API key needed.
-          </p>
-          <button class="button button-primary" id="polyfills-button">
-            ✨ Write via Polyfill
-          </button>
-          <div class="output-label">Output</div>
-          <div class="output empty" id="polyfills-output">
-            Output will appear here…
-          </div>
-        </div>
-      </div>
-
-      <!-- 6. TRANSLATOR -->
-      <div
-        class="panel"
-        id="tab-translator"
-        role="tabpanel"
-        aria-labelledby="tab-button-translator"
-      >
-        <div class="card">
-          <div class="card-header">
-            <h2>Translator API</h2>
-            <span
-              class="availability-badge availability-unknown"
-              id="translator-badge"
-              >checking…</span
-            >
-          </div>
-          <p class="card-description">
-            Translates the article via <code>Translator.create()</code> and
-            <code>translate()</code>. A language pack download may be needed.
-          </p>
-          <div class="controls">
-            <div class="control">
-              <label>Source</label>
-              <select disabled>
-                <option>English (en)</option>
-              </select>
-            </div>
-            <div class="control">
-              <label>Target Language</label>
-              <select id="translator-target">
-                <option value="es">Spanish (es)</option>
-                <option value="fr">French (fr)</option>
-                <option value="de">German (de)</option>
-                <option value="it">Italian (it)</option>
-                <option value="pt">Portuguese (pt)</option>
-                <option value="ja">Japanese (ja)</option>
-                <option value="zh">Chinese (zh)</option>
-                <option value="ko">Korean (ko)</option>
-                <option value="nl">Dutch (nl)</option>
-                <option value="pl">Polish (pl)</option>
-              </select>
-            </div>
-            <button class="button button-primary" id="translator-button">
-              ✨ Translate
-            </button>
-          </div>
-          <div class="download-progress" id="translator-progress">
-            <progress></progress>
-            <span>Downloading language pack…</span>
-          </div>
-          <div class="output-label">Translation</div>
-          <div class="output empty" id="translator-output">
-            Output will appear here…
-          </div>
-        </div>
+      <div class="card">
+        <div id="loading">Loading…</div>
+        <div id="content" class="prose"></div>
       </div>
     </div>
 
@@ -569,15 +109,19 @@
         >demos</a
       >
       ·
+      <a href="starter.html">starter</a>
+      ·
       <a href="solution.html">solution</a>
     </footer>
 
-    <script type="module" src="step-1-summarizer.js"></script>
-    <script type="module" src="step-2-prompt-structured.js"></script>
-    <script type="module" src="step-3-prompt-multimodal.js"></script>
-    <script type="module" src="step-4-writer.js"></script>
-    <script type="module" src="step-5-rewriter.js"></script>
-    <script type="module" src="step-6-translator.js"></script>
-    <script type="module" src="step-7-polyfills.js"></script>
+    <script type="module">
+      import { marked } from 'https://esm.sh/marked@14';
+
+      const res = await fetch('README.md');
+      const md = await res.text();
+
+      document.getElementById('loading').remove();
+      document.getElementById('content').innerHTML = marked.parse(md);
+    </script>
   </body>
 </html>
