@@ -78,7 +78,7 @@ details[open].article-box summary::before {
   flex-wrap: wrap;
   margin-bottom: 14px;
 }
-.tab-btn {
+.tab-button {
   padding: 6px 14px;
   border: none;
   background: white;
@@ -89,7 +89,7 @@ details[open].article-box summary::before {
   color: #5f6368;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.tab-btn.active {
+.tab-button.active {
   background: var(--accent);
   color: white;
 }
@@ -115,39 +115,39 @@ details[open].article-box summary::before {
   font-size: 1rem;
   font-weight: 600;
 }
-.avail-badge {
+.availability-badge {
   font-size: 0.7rem;
   padding: 2px 8px;
   border-radius: 10px;
   font-weight: 600;
   white-space: nowrap;
 }
-.avail-available {
+.availability-available {
   background: #e6f4ea;
   color: #137333;
 }
-.avail-downloadable {
+.availability-downloadable {
   background: #fff8e1;
   color: #8a4f00;
 }
-.avail-downloading {
+.availability-downloading {
   background: #e3f2fd;
   color: #0d47a1;
 }
-.avail-unavailable {
+.availability-unavailable {
   background: #fce8e6;
   color: #c5221f;
 }
-.avail-unknown {
+.availability-unknown {
   background: #f1f3f4;
   color: #5f6368;
 }
-.card-desc {
+.card-description {
   font-size: 0.84rem;
   color: #5f6368;
   margin-bottom: 16px;
 }
-.card-desc code {
+.card-description code {
   background: #f1f3f4;
   padding: 1px 4px;
   border-radius: 3px;
@@ -160,12 +160,12 @@ details[open].article-box summary::before {
   align-items: flex-end;
   margin-bottom: 12px;
 }
-.ctrl {
+.control {
   display: flex;
   flex-direction: column;
   gap: 3px;
 }
-.ctrl label {
+.control label {
   font-size: 0.7rem;
   font-weight: 700;
   color: #5f6368;
@@ -201,7 +201,7 @@ textarea:focus {
   outline: none;
   border-color: var(--accent);
 }
-.btn {
+.button {
   padding: 8px 16px;
   border: none;
   border-radius: 6px;
@@ -210,29 +210,29 @@ textarea:focus {
   cursor: pointer;
   white-space: nowrap;
 }
-.btn-primary {
+.button-primary {
   background: var(--accent);
   color: white;
 }
-.btn-primary:disabled {
+.button-primary:disabled {
   background: #dadce0;
   color: #9aa0a6;
   cursor: not-allowed;
 }
-.dl-progress {
+.download-progress {
   display: none;
   margin: 8px 0;
 }
-.dl-progress progress {
+.download-progress progress {
   width: 100%;
   height: 5px;
   border-radius: 3px;
 }
-.dl-progress span {
+.download-progress span {
   font-size: 0.76rem;
   color: #5f6368;
 }
-.out-label {
+.output-label {
   font-size: 0.7rem;
   font-weight: 700;
   color: #5f6368;
@@ -240,7 +240,7 @@ textarea:focus {
   letter-spacing: 0.06em;
   margin: 12px 0 5px;
 }
-.out {
+.output {
   background: #f8f9fa;
   border: 1.5px solid #e8eaed;
   border-radius: 6px;
@@ -251,14 +251,14 @@ textarea:focus {
   white-space: pre-wrap;
   color: #202124;
 }
-.out.empty {
+.output.empty {
   color: #9aa0a6;
   font-style: italic;
 }
-.out.loading {
+.output.loading {
   color: var(--accent);
 }
-.tags-out {
+.tags-output {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -276,7 +276,7 @@ textarea:focus {
   font-size: 0.82rem;
   font-weight: 500;
 }
-.img-upload {
+.image-upload {
   border: 2px dashed #dadce0;
   border-radius: 6px;
   padding: 16px;
@@ -288,12 +288,12 @@ textarea:focus {
   align-items: center;
   justify-content: center;
 }
-.img-upload img {
+.image-upload img {
   max-height: 160px;
   max-width: 100%;
   border-radius: 4px;
 }
-.img-upload p {
+.image-upload p {
   color: #5f6368;
   font-size: 0.88rem;
 }

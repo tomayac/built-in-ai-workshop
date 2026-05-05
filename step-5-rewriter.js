@@ -1,4 +1,4 @@
-import { setBadge, setOut, makeMonitor, busy } from './shared.js';
+import { setBadge, setOutput, busy } from './shared.js';
 
 // ── TODO 13: Check availability ───────────────────────────────────────────────
 // Use the same options you'll pass to Rewriter.create().
@@ -9,7 +9,7 @@ import { setBadge, setOut, makeMonitor, busy } from './shared.js';
 // })
 // ─────────────────────────────────────────────────────────────────────────────
 (async () => {
-  const badge = document.getElementById('rw-badge');
+  const badge = document.getElementById('rewriter-badge');
   try {
     setBadge(badge, 'unknown');
   } catch {
@@ -17,44 +17,54 @@ import { setBadge, setOut, makeMonitor, busy } from './shared.js';
   }
 })();
 
-document.getElementById('rw-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('rw-btn');
-  const out = document.getElementById('rw-out');
-  const prog = document.getElementById('rw-progress');
-  const tone = document.getElementById('rw-tone').value;
-  const length = document.getElementById('rw-length').value;
-  const input = document.getElementById('rw-input').value.trim();
-  if (!input) return;
+document
+  .getElementById('rewriter-button')
+  .addEventListener('click', async () => {
+    const button = document.getElementById('rewriter-button');
+    const output = document.getElementById('rewriter-output');
+    const downloadProgress = document.getElementById('rewriter-progress');
+    const tone = document.getElementById('rewriter-tone').value;
+    const length = document.getElementById('rewriter-length').value;
+    const input = document.getElementById('rewriter-input').value.trim();
+    if (!input) return;
 
-  busy(btn, true);
-  out.textContent = '';
-  out.className = 'out';
+    busy(button, true);
+    output.textContent = '';
+    output.className = 'output';
 
-  try {
-    // ── TODO 14: Create a Rewriter ──────────────────────────────────────────
-    // Hint: const rewriter = await Rewriter.create({
-    //   tone,
-    //   length,
-    //   format: 'as-is',
-    //   sharedContext: 'Rewriting a travel blog post.',
-    //   expectedInputLanguages: ['en'],
-    //   outputLanguage: 'en',
-    //   monitor: makeMonitor(prog),
-    // });
-    // ────────────────────────────────────────────────────────────────────────
-    const rewriter = null; // ← replace with Rewriter.create(...)
+    try {
+      // ── TODO 14: Create a Rewriter ──────────────────────────────────────────
+      // Hint: const rewriter = await Rewriter.create({
+      //   tone,
+      //   length,
+      //   format: 'as-is',
+      //   sharedContext: 'Rewriting a travel blog post.',
+      //   expectedInputLanguages: ['en'],
+      //   outputLanguage: 'en',
+      //   monitor(m) {
+      //     downloadProgress.style.display = 'block';
+      //     m.addEventListener('downloadprogress', (event) => {
+      //       downloadProgress.querySelector('progress').value = event.loaded;
+      //       downloadProgress.querySelector('progress').max = event.total;
+      //       downloadProgress.querySelector('span').textContent =
+      //         `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+      //     });
+      //   },
+      // });
+      // ────────────────────────────────────────────────────────────────────────
+      const rewriter = null; // ← replace with Rewriter.create(...)
 
-    // ── TODO 15: Stream the rewritten text ──────────────────────────────────
-    // Call rewriter.rewriteStreaming(input).
-    // Same pattern as TODO 12 — concatenate chunks and update out.textContent.
-    // ────────────────────────────────────────────────────────────────────────
+      // ── TODO 15: Stream the rewritten text ──────────────────────────────────
+      // Call rewriter.rewriteStreaming(input).
+      // Same pattern as TODO 12 — for await each chunk and call output.append(chunk).
+      // ────────────────────────────────────────────────────────────────────────
 
-    prog.style.display = 'none';
-    rewriter?.destroy();
-  } catch (err) {
-    setOut(out, `Error: ${err.message}`);
-    console.error(err);
-  } finally {
-    busy(btn, false);
-  }
-});
+      downloadProgress.style.display = 'none';
+      rewriter?.destroy();
+    } catch (err) {
+      setOutput(output, `Error: ${err.message}`);
+      console.error(err);
+    } finally {
+      busy(button, false);
+    }
+  });

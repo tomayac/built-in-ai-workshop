@@ -1,7 +1,7 @@
-import { ARTICLE, setBadge, setOut, makeMonitor, busy } from '../shared.js';
+import { ARTICLE, setBadge, setOutput, busy } from '../shared.js';
 
 async function checkAvailability(target) {
-  const badge = document.getElementById('tr-badge');
+  const badge = document.getElementById('translator-badge');
   try {
     const status = await Translator.availability({
       sourceLanguage: 'en',
@@ -16,35 +16,47 @@ async function checkAvailability(target) {
 // Check availability on page load with the default target language.
 checkAvailability('es');
 
-document.getElementById('tr-target').addEventListener('change', (e) => {
-  checkAvailability(e.target.value);
-});
+document
+  .getElementById('translator-target')
+  .addEventListener('change', (event) => {
+    checkAvailability(event.target.value);
+  });
 
-document.getElementById('tr-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('tr-btn');
-  const out = document.getElementById('tr-out');
-  const prog = document.getElementById('tr-progress');
-  const target = document.getElementById('tr-target').value;
+document
+  .getElementById('translator-button')
+  .addEventListener('click', async () => {
+    const button = document.getElementById('translator-button');
+    const output = document.getElementById('translator-output');
+    const downloadProgress = document.getElementById('translator-progress');
+    const target = document.getElementById('translator-target').value;
 
-  busy(btn, true);
-  setOut(out, '⏳ Translating…', 'loading');
+    busy(button, true);
+    setOutput(output, '⏳ Translating…', 'loading');
 
-  try {
-    const translator = await Translator.create({
-      sourceLanguage: 'en',
-      targetLanguage: target,
-      monitor: makeMonitor(prog),
-    });
+    try {
+      const translator = await Translator.create({
+        sourceLanguage: 'en',
+        targetLanguage: target,
+        monitor(m) {
+          downloadProgress.style.display = 'block';
+          m.addEventListener('downloadprogress', (event) => {
+            downloadProgress.querySelector('progress').value = event.loaded;
+            downloadProgress.querySelector('progress').max = event.total;
+            downloadProgress.querySelector('span').textContent =
+              `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+          });
+        },
+      });
 
-    // translate() is NOT streaming — it returns the full result at once.
-    const result = await translator.translate(ARTICLE);
-    setOut(out, result);
-    prog.style.display = 'none';
-    translator.destroy();
-  } catch (err) {
-    setOut(out, `Error: ${err.message}`);
-    console.error(err);
-  } finally {
-    busy(btn, false);
-  }
-});
+      // translate() is NOT streaming — it returns the full result at once.
+      const result = await translator.translate(ARTICLE);
+      setOutput(output, result);
+      downloadProgress.style.display = 'none';
+      translator.destroy();
+    } catch (err) {
+      setOutput(output, `Error: ${err.message}`);
+      console.error(err);
+    } finally {
+      busy(button, false);
+    }
+  });

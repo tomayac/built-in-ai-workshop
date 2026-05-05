@@ -1,8 +1,8 @@
-import { ARTICLE, setBadge, setOut, makeMonitor, busy } from '../shared.js';
+import { ARTICLE, setBadge, setOutput, busy } from '../shared.js';
 
 // Check availability on page load.
 (async () => {
-  const badge = document.getElementById('sum-badge');
+  const badge = document.getElementById('summarizer-badge');
   try {
     const status = await Summarizer.availability({
       type: 'key-points',
@@ -15,44 +15,51 @@ import { ARTICLE, setBadge, setOut, makeMonitor, busy } from '../shared.js';
   }
 })();
 
-document.getElementById('sum-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('sum-btn');
-  const out = document.getElementById('sum-out');
-  const prog = document.getElementById('sum-progress');
-  const type = document.getElementById('sum-type').value;
-  const length = document.getElementById('sum-length').value;
-  const format = document.getElementById('sum-format').value;
+document
+  .getElementById('summarizer-button')
+  .addEventListener('click', async () => {
+    const button = document.getElementById('summarizer-button');
+    const output = document.getElementById('summarizer-output');
+    const downloadProgress = document.getElementById('summarizer-progress');
+    const type = document.getElementById('summarizer-type').value;
+    const length = document.getElementById('summarizer-length').value;
+    const format = document.getElementById('summarizer-format').value;
 
-  busy(btn, true);
-  setOut(out, '⏳ Creating summarizer…', 'loading');
+    busy(button, true);
+    setOutput(output, '⏳ Creating summarizer…', 'loading');
 
-  try {
-    const summarizer = await Summarizer.create({
-      type,
-      length,
-      format,
-      expectedInputLanguages: ['en'],
-      outputLanguage: 'en',
-      monitor: makeMonitor(prog),
-    });
+    try {
+      const summarizer = await Summarizer.create({
+        type,
+        length,
+        format,
+        expectedInputLanguages: ['en'],
+        outputLanguage: 'en',
+        monitor(m) {
+          downloadProgress.style.display = 'block';
+          m.addEventListener('downloadprogress', (event) => {
+            downloadProgress.querySelector('progress').value = event.loaded;
+            downloadProgress.querySelector('progress').max = event.total;
+            downloadProgress.querySelector('span').textContent =
+              `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+          });
+        },
+      });
 
-    out.textContent = '';
-    out.className = 'out';
+      output.textContent = '';
+      output.className = 'output';
 
-    // summarizeStreaming() yields independent chunks — concatenate them.
-    const stream = summarizer.summarizeStreaming(ARTICLE);
-    let result = '';
-    for await (const chunk of stream) {
-      result += chunk;
-      out.textContent = result;
+      const stream = summarizer.summarizeStreaming(ARTICLE);
+      for await (const chunk of stream) {
+        output.append(chunk);
+      }
+
+      downloadProgress.style.display = 'none';
+      summarizer.destroy();
+    } catch (err) {
+      setOutput(output, `Error: ${err.message}`);
+      console.error(err);
+    } finally {
+      busy(button, false);
     }
-
-    prog.style.display = 'none';
-    summarizer.destroy();
-  } catch (err) {
-    setOut(out, `Error: ${err.message}`);
-    console.error(err);
-  } finally {
-    busy(btn, false);
-  }
-});
+  });

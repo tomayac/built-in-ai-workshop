@@ -1,8 +1,8 @@
-import { setBadge, setOut, makeMonitor, busy } from '../shared.js';
+import { setBadge, setOutput, busy } from '../shared.js';
 
 // Check availability on page load.
 (async () => {
-  const badge = document.getElementById('wr-badge');
+  const badge = document.getElementById('writer-badge');
   try {
     const status = await Writer.availability({
       tone: 'neutral',
@@ -17,18 +17,18 @@ import { setBadge, setOut, makeMonitor, busy } from '../shared.js';
   }
 })();
 
-document.getElementById('wr-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('wr-btn');
-  const out = document.getElementById('wr-out');
-  const prog = document.getElementById('wr-progress');
-  const tone = document.getElementById('wr-tone').value;
-  const length = document.getElementById('wr-length').value;
-  const input = document.getElementById('wr-input').value.trim();
+document.getElementById('writer-button').addEventListener('click', async () => {
+  const button = document.getElementById('writer-button');
+  const output = document.getElementById('writer-output');
+  const downloadProgress = document.getElementById('writer-progress');
+  const tone = document.getElementById('writer-tone').value;
+  const length = document.getElementById('writer-length').value;
+  const input = document.getElementById('writer-input').value.trim();
   if (!input) return;
 
-  busy(btn, true);
-  out.textContent = '';
-  out.className = 'out';
+  busy(button, true);
+  output.textContent = '';
+  output.className = 'output';
 
   try {
     const writer = await Writer.create({
@@ -39,23 +39,28 @@ document.getElementById('wr-btn').addEventListener('click', async () => {
         'The user provides bullet points or notes about a trip. Expand them into a vivid travel blog post.',
       expectedInputLanguages: ['en'],
       outputLanguage: 'en',
-      monitor: makeMonitor(prog),
+      monitor(m) {
+        downloadProgress.style.display = 'block';
+        m.addEventListener('downloadprogress', (event) => {
+          downloadProgress.querySelector('progress').value = event.loaded;
+          downloadProgress.querySelector('progress').max = event.total;
+          downloadProgress.querySelector('span').textContent =
+            `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+        });
+      },
     });
 
-    // writeStreaming() yields independent chunks — concatenate them.
     const stream = writer.writeStreaming(input);
-    let result = '';
     for await (const chunk of stream) {
-      result += chunk;
-      out.textContent = result;
+      output.append(chunk);
     }
 
-    prog.style.display = 'none';
+    downloadProgress.style.display = 'none';
     writer.destroy();
   } catch (err) {
-    setOut(out, `Error: ${err.message}`);
+    setOutput(output, `Error: ${err.message}`);
     console.error(err);
   } finally {
-    busy(btn, false);
+    busy(button, false);
   }
 });

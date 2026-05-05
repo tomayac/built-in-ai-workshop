@@ -1,4 +1,4 @@
-import { setBadge, setOut, makeMonitor, busy } from './shared.js';
+import { setBadge, setOutput, busy } from './shared.js';
 
 // ── TODO 10: Check availability ───────────────────────────────────────────────
 // Use the same options you'll pass to Writer.create().
@@ -9,7 +9,7 @@ import { setBadge, setOut, makeMonitor, busy } from './shared.js';
 // })
 // ─────────────────────────────────────────────────────────────────────────────
 (async () => {
-  const badge = document.getElementById('wr-badge');
+  const badge = document.getElementById('writer-badge');
   try {
     setBadge(badge, 'unknown');
   } catch {
@@ -17,18 +17,18 @@ import { setBadge, setOut, makeMonitor, busy } from './shared.js';
   }
 })();
 
-document.getElementById('wr-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('wr-btn');
-  const out = document.getElementById('wr-out');
-  const prog = document.getElementById('wr-progress');
-  const tone = document.getElementById('wr-tone').value;
-  const length = document.getElementById('wr-length').value;
-  const input = document.getElementById('wr-input').value.trim();
+document.getElementById('writer-button').addEventListener('click', async () => {
+  const button = document.getElementById('writer-button');
+  const output = document.getElementById('writer-output');
+  const downloadProgress = document.getElementById('writer-progress');
+  const tone = document.getElementById('writer-tone').value;
+  const length = document.getElementById('writer-length').value;
+  const input = document.getElementById('writer-input').value.trim();
   if (!input) return;
 
-  busy(btn, true);
-  out.textContent = '';
-  out.className = 'out';
+  busy(button, true);
+  output.textContent = '';
+  output.className = 'output';
 
   try {
     // ── TODO 11: Create a Writer ────────────────────────────────────────────
@@ -39,30 +39,35 @@ document.getElementById('wr-btn').addEventListener('click', async () => {
     //   sharedContext: 'The user provides bullet points about a trip. Expand into a travel blog post.',
     //   expectedInputLanguages: ['en'],
     //   outputLanguage: 'en',
-    //   monitor: makeMonitor(prog),
+    //   monitor(m) {
+    //     downloadProgress.style.display = 'block';
+    //     m.addEventListener('downloadprogress', (event) => {
+    //       downloadProgress.querySelector('progress').value = event.loaded;
+    //       downloadProgress.querySelector('progress').max = event.total;
+    //       downloadProgress.querySelector('span').textContent =
+    //         `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+    //     });
+    //   },
     // });
     // ────────────────────────────────────────────────────────────────────────
     const writer = null; // ← replace with Writer.create(...)
 
     // ── TODO 12: Stream the generated post ──────────────────────────────────
     // Call writer.writeStreaming(input).
-    // Each chunk is independent — concatenate and update out.textContent.
     //
     // Hint:
     //   const stream = writer.writeStreaming(input);
-    //   let result = '';
     //   for await (const chunk of stream) {
-    //     result += chunk;
-    //     out.textContent = result;
+    //     output.append(chunk);
     //   }
     // ────────────────────────────────────────────────────────────────────────
 
-    prog.style.display = 'none';
+    downloadProgress.style.display = 'none';
     writer?.destroy();
   } catch (err) {
-    setOut(out, `Error: ${err.message}`);
+    setOutput(output, `Error: ${err.message}`);
     console.error(err);
   } finally {
-    busy(btn, false);
+    busy(button, false);
   }
 });

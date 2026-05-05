@@ -1,4 +1,4 @@
-import { ARTICLE, setBadge, makeMonitor, busy } from './shared.js';
+import { ARTICLE, setBadge, busy } from './shared.js';
 
 const TAGS_ENUM = [
   'Adventure',
@@ -40,7 +40,7 @@ const TAG_SCHEMA = {
 // })
 // ─────────────────────────────────────────────────────────────────────────────
 (async () => {
-  const badge = document.getElementById('ps-badge');
+  const badge = document.getElementById('prompt-structured-badge');
   try {
     setBadge(badge, 'unknown');
   } catch {
@@ -48,43 +48,55 @@ const TAG_SCHEMA = {
   }
 })();
 
-document.getElementById('ps-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('ps-btn');
-  const out = document.getElementById('ps-out');
-  const prog = document.getElementById('ps-progress');
+document
+  .getElementById('prompt-structured-button')
+  .addEventListener('click', async () => {
+    const button = document.getElementById('prompt-structured-button');
+    const output = document.getElementById('prompt-structured-output');
+    const downloadProgress = document.getElementById(
+      'prompt-structured-progress'
+    );
 
-  busy(btn, true);
-  out.innerHTML =
-    '<span style="color:#9aa0a6;font-style:italic;font-size:.88rem;">⏳ Generating tags…</span>';
+    busy(button, true);
+    output.innerHTML =
+      '<span style="color:#9aa0a6;font-style:italic;font-size:.88rem;">⏳ Generating tags…</span>';
 
-  try {
-    // ── TODO 5: Create a LanguageModel session ──────────────────────────────
-    // Hint: const session = await LanguageModel.create({
-    //   expectedInputs:  [{ type: 'text', languages: ['en'] }],
-    //   expectedOutputs: [{ type: 'text', languages: ['en'] }],
-    //   monitor: makeMonitor(prog),
-    // });
-    // ────────────────────────────────────────────────────────────────────────
-    const session = null; // ← replace with LanguageModel.create(...)
+    try {
+      // ── TODO 5: Create a LanguageModel session ──────────────────────────────
+      // Hint: const session = await LanguageModel.create({
+      //   expectedInputs:  [{ type: 'text', languages: ['en'] }],
+      //   expectedOutputs: [{ type: 'text', languages: ['en'] }],
+      //   monitor(m) {
+      //     downloadProgress.style.display = 'block';
+      //     m.addEventListener('downloadprogress', (event) => {
+      //       downloadProgress.querySelector('progress').value = event.loaded;
+      //       downloadProgress.querySelector('progress').max = event.total;
+      //       downloadProgress.querySelector('span').textContent =
+      //         `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+      //     });
+      //   },
+      // });
+      // ────────────────────────────────────────────────────────────────────────
+      const session = null; // ← replace with LanguageModel.create(...)
 
-    // ── TODO 6: Prompt with responseConstraint, parse JSON, render tags ─────
-    // Use responseConstraint: TAG_SCHEMA to guarantee valid JSON output.
-    //
-    // Hint:
-    //   const raw = await session.prompt(
-    //     `Pick relevant tags for this travel blog post:\n\n${ARTICLE}`,
-    //     { responseConstraint: TAG_SCHEMA },
-    //   );
-    //   const { tags } = JSON.parse(raw);
-    //   out.innerHTML = tags.map(t => `<span class="tag-chip">${t}</span>`).join('');
-    // ────────────────────────────────────────────────────────────────────────
+      // ── TODO 6: Prompt with responseConstraint, parse JSON, render tags ─────
+      // Use responseConstraint: TAG_SCHEMA to guarantee valid JSON output.
+      //
+      // Hint:
+      //   const raw = await session.prompt(
+      //     `Pick relevant tags for this travel blog post:\n\n${ARTICLE}`,
+      //     { responseConstraint: TAG_SCHEMA },
+      //   );
+      //   const { tags } = JSON.parse(raw);
+      //   output.innerHTML = tags.map(tag => `<span class="tag-chip">${tag}</span>`).join('');
+      // ────────────────────────────────────────────────────────────────────────
 
-    prog.style.display = 'none';
-    session?.destroy();
-  } catch (err) {
-    out.innerHTML = `<span style="color:#c5221f;">Error: ${err.message}</span>`;
-    console.error(err);
-  } finally {
-    busy(btn, false);
-  }
-});
+      downloadProgress.style.display = 'none';
+      session?.destroy();
+    } catch (err) {
+      output.innerHTML = `<span style="color:#c5221f;">Error: ${err.message}</span>`;
+      console.error(err);
+    } finally {
+      busy(button, false);
+    }
+  });

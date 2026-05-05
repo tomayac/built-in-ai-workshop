@@ -33,71 +33,56 @@ Barcelona is a masterpiece of contradictions—it's historic yet modern, relaxin
 
 // ── Utility functions ─────────────────────────────────────────────────────────
 
-export function setBadge(el, status) {
-  el.textContent = status;
+export function setBadge(element, status) {
+  element.textContent = status;
   const map = {
     available: 'available',
     downloadable: 'downloadable',
     downloading: 'downloading',
     unavailable: 'unavailable',
   };
-  el.className = `avail-badge avail-${map[status] ?? 'unknown'}`;
+  element.className = `availability-badge availability-${map[status] ?? 'unknown'}`;
 }
 
-export function setOut(el, text, cls = '') {
-  el.textContent = text;
-  el.className = 'out' + (cls ? ` ${cls}` : '');
+export function setOutput(element, text, cssClass = '') {
+  element.textContent = text;
+  element.className = 'output' + (cssClass ? ` ${cssClass}` : '');
 }
 
-// Pass the returned function as the `monitor` option in create() to show
-// download progress while the model is being fetched.
-export function makeMonitor(wrap) {
-  const bar = wrap.querySelector('progress');
-  const lbl = wrap.querySelector('span');
-  return (m) => {
-    wrap.style.display = 'block';
-    m.addEventListener('downloadprogress', (e) => {
-      bar.value = e.loaded;
-      bar.max = e.total;
-      lbl.textContent = `Downloading… ${Math.round((e.loaded / e.total) * 100)}%`;
-    });
-  };
-}
-
-export function busy(btn, yes) {
-  btn.disabled = yes;
-  btn.textContent = yes ? '⏳ Working…' : btn.dataset.label;
+export function busy(button, isBusy) {
+  button.disabled = isBusy;
+  button.textContent = isBusy ? '⏳ Working…' : button.dataset.label;
 }
 
 // ── One-time DOM setup ────────────────────────────────────────────────────────
 
 // Store original button labels so busy() can restore them.
-document.querySelectorAll('.btn').forEach((b) => {
-  b.dataset.label = b.textContent;
+document.querySelectorAll('.button').forEach((button) => {
+  button.dataset.label = button.textContent;
 });
 
 // Fill the sample article display and the rewriter textarea.
 document.getElementById('article-content').textContent = ARTICLE;
-document.getElementById('rw-input').value = ARTICLE;
+document.getElementById('rewriter-input').value = ARTICLE;
 
 // ── Tab navigation ────────────────────────────────────────────────────────────
 
 function activateTab(name) {
-  document.querySelectorAll('[role="tab"]').forEach((b) => {
-    const active = b.dataset.tab === name;
-    b.classList.toggle('active', active);
-    b.setAttribute('aria-selected', active);
-    b.tabIndex = active ? 0 : -1;
+  document.querySelectorAll('[role="tab"]').forEach((tab) => {
+    const active = tab.dataset.tab === name;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', active);
+    tab.tabIndex = active ? 0 : -1;
   });
-  document.querySelectorAll('[role="tabpanel"]').forEach((p) => {
-    p.classList.toggle('active', p.id === 'tab-' + name);
+  document.querySelectorAll('[role="tabpanel"]').forEach((panel) => {
+    panel.classList.toggle('active', panel.id === 'tab-' + name);
   });
 }
 
 function tabFromHash() {
   const hash = location.hash.slice(1);
   const names = [...document.querySelectorAll('[role="tab"]')].map(
-    (b) => b.dataset.tab
+    (tab) => tab.dataset.tab
   );
   return names.includes(hash) ? hash : names[0];
 }
@@ -105,23 +90,26 @@ function tabFromHash() {
 activateTab(tabFromHash());
 window.addEventListener('hashchange', () => activateTab(tabFromHash()));
 
-document.querySelectorAll('[role="tab"]').forEach((btn) => {
-  btn.addEventListener('click', () => {
-    location.hash = btn.dataset.tab;
+document.querySelectorAll('[role="tab"]').forEach((tabButton) => {
+  tabButton.addEventListener('click', () => {
+    location.hash = tabButton.dataset.tab;
   });
 });
 
-document.querySelector('[role="tablist"]').addEventListener('keydown', (e) => {
-  const tabs = [...document.querySelectorAll('[role="tab"]')];
-  const idx = tabs.indexOf(document.activeElement);
-  if (idx === -1) return;
-  let next = idx;
-  if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
-  else if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
-  else if (e.key === 'Home') next = 0;
-  else if (e.key === 'End') next = tabs.length - 1;
-  else return;
-  e.preventDefault();
-  tabs[next].focus();
-  location.hash = tabs[next].dataset.tab;
-});
+document
+  .querySelector('[role="tablist"]')
+  .addEventListener('keydown', (event) => {
+    const tabs = [...document.querySelectorAll('[role="tab"]')];
+    const index = tabs.indexOf(document.activeElement);
+    if (index === -1) return;
+    let nextIndex = index;
+    if (event.key === 'ArrowRight') nextIndex = (index + 1) % tabs.length;
+    else if (event.key === 'ArrowLeft')
+      nextIndex = (index - 1 + tabs.length) % tabs.length;
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = tabs.length - 1;
+    else return;
+    event.preventDefault();
+    tabs[nextIndex].focus();
+    location.hash = tabs[nextIndex].dataset.tab;
+  });

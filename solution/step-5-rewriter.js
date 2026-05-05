@@ -1,8 +1,8 @@
-import { setBadge, setOut, makeMonitor, busy } from '../shared.js';
+import { setBadge, setOutput, busy } from '../shared.js';
 
 // Check availability on page load.
 (async () => {
-  const badge = document.getElementById('rw-badge');
+  const badge = document.getElementById('rewriter-badge');
   try {
     const status = await Rewriter.availability({
       tone: 'as-is',
@@ -17,44 +17,51 @@ import { setBadge, setOut, makeMonitor, busy } from '../shared.js';
   }
 })();
 
-document.getElementById('rw-btn').addEventListener('click', async () => {
-  const btn = document.getElementById('rw-btn');
-  const out = document.getElementById('rw-out');
-  const prog = document.getElementById('rw-progress');
-  const tone = document.getElementById('rw-tone').value;
-  const length = document.getElementById('rw-length').value;
-  const input = document.getElementById('rw-input').value.trim();
-  if (!input) return;
+document
+  .getElementById('rewriter-button')
+  .addEventListener('click', async () => {
+    const button = document.getElementById('rewriter-button');
+    const output = document.getElementById('rewriter-output');
+    const downloadProgress = document.getElementById('rewriter-progress');
+    const tone = document.getElementById('rewriter-tone').value;
+    const length = document.getElementById('rewriter-length').value;
+    const input = document.getElementById('rewriter-input').value.trim();
+    if (!input) return;
 
-  busy(btn, true);
-  out.textContent = '';
-  out.className = 'out';
+    busy(button, true);
+    output.textContent = '';
+    output.className = 'output';
 
-  try {
-    const rewriter = await Rewriter.create({
-      tone,
-      length,
-      format: 'as-is',
-      sharedContext: 'Rewriting a travel blog post.',
-      expectedInputLanguages: ['en'],
-      outputLanguage: 'en',
-      monitor: makeMonitor(prog),
-    });
+    try {
+      const rewriter = await Rewriter.create({
+        tone,
+        length,
+        format: 'as-is',
+        sharedContext: 'Rewriting a travel blog post.',
+        expectedInputLanguages: ['en'],
+        outputLanguage: 'en',
+        monitor(m) {
+          downloadProgress.style.display = 'block';
+          m.addEventListener('downloadprogress', (event) => {
+            downloadProgress.querySelector('progress').value = event.loaded;
+            downloadProgress.querySelector('progress').max = event.total;
+            downloadProgress.querySelector('span').textContent =
+              `Downloading… ${Math.round((event.loaded / event.total) * 100)}%`;
+          });
+        },
+      });
 
-    // rewriteStreaming() yields independent chunks — concatenate them.
-    const stream = rewriter.rewriteStreaming(input);
-    let result = '';
-    for await (const chunk of stream) {
-      result += chunk;
-      out.textContent = result;
+      const stream = rewriter.rewriteStreaming(input);
+      for await (const chunk of stream) {
+        output.append(chunk);
+      }
+
+      downloadProgress.style.display = 'none';
+      rewriter.destroy();
+    } catch (err) {
+      setOutput(output, `Error: ${err.message}`);
+      console.error(err);
+    } finally {
+      busy(button, false);
     }
-
-    prog.style.display = 'none';
-    rewriter.destroy();
-  } catch (err) {
-    setOut(out, `Error: ${err.message}`);
-    console.error(err);
-  } finally {
-    busy(btn, false);
-  }
-});
+  });
