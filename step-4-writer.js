@@ -18,12 +18,12 @@ import { setBadge, setOut, makeMonitor, busy } from './shared.js';
 })();
 
 document.getElementById('wr-btn').addEventListener('click', async () => {
-  const btn    = document.getElementById('wr-btn');
-  const out    = document.getElementById('wr-out');
-  const prog   = document.getElementById('wr-progress');
-  const tone   = document.getElementById('wr-tone').value;
+  const btn = document.getElementById('wr-btn');
+  const out = document.getElementById('wr-out');
+  const prog = document.getElementById('wr-progress');
+  const tone = document.getElementById('wr-tone').value;
   const length = document.getElementById('wr-length').value;
-  const input  = document.getElementById('wr-input').value.trim();
+  const input = document.getElementById('wr-input').value.trim();
   if (!input) return;
 
   busy(btn, true);

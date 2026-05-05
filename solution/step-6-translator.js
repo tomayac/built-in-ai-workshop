@@ -3,7 +3,10 @@ import { ARTICLE, setBadge, setOut, makeMonitor, busy } from '../shared.js';
 async function checkAvailability(target) {
   const badge = document.getElementById('tr-badge');
   try {
-    const status = await Translator.availability({ sourceLanguage: 'en', targetLanguage: target });
+    const status = await Translator.availability({
+      sourceLanguage: 'en',
+      targetLanguage: target,
+    });
     setBadge(badge, status);
   } catch {
     setBadge(badge, 'unavailable');
@@ -13,14 +16,14 @@ async function checkAvailability(target) {
 // Check availability on page load with the default target language.
 checkAvailability('es');
 
-document.getElementById('tr-target').addEventListener('change', e => {
+document.getElementById('tr-target').addEventListener('change', (e) => {
   checkAvailability(e.target.value);
 });
 
 document.getElementById('tr-btn').addEventListener('click', async () => {
-  const btn    = document.getElementById('tr-btn');
-  const out    = document.getElementById('tr-out');
-  const prog   = document.getElementById('tr-progress');
+  const btn = document.getElementById('tr-btn');
+  const out = document.getElementById('tr-out');
+  const prog = document.getElementById('tr-progress');
   const target = document.getElementById('tr-target').value;
 
   busy(btn, true);

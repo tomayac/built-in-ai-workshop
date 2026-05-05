@@ -35,8 +35,12 @@ Barcelona is a masterpiece of contradictions—it's historic yet modern, relaxin
 
 export function setBadge(el, status) {
   el.textContent = status;
-  const map = { available: 'available', downloadable: 'downloadable',
-                downloading: 'downloading', unavailable: 'unavailable' };
+  const map = {
+    available: 'available',
+    downloadable: 'downloadable',
+    downloading: 'downloading',
+    unavailable: 'unavailable',
+  };
   el.className = `avail-badge avail-${map[status] ?? 'unknown'}`;
 }
 
@@ -54,21 +58,23 @@ export function makeMonitor(wrap) {
     wrap.style.display = 'block';
     m.addEventListener('downloadprogress', (e) => {
       bar.value = e.loaded;
-      bar.max   = e.total;
-      lbl.textContent = `Downloading… ${Math.round(e.loaded / e.total * 100)}%`;
+      bar.max = e.total;
+      lbl.textContent = `Downloading… ${Math.round((e.loaded / e.total) * 100)}%`;
     });
   };
 }
 
 export function busy(btn, yes) {
-  btn.disabled    = yes;
+  btn.disabled = yes;
   btn.textContent = yes ? '⏳ Working…' : btn.dataset.label;
 }
 
 // ── One-time DOM setup ────────────────────────────────────────────────────────
 
 // Store original button labels so busy() can restore them.
-document.querySelectorAll('.btn').forEach(b => { b.dataset.label = b.textContent; });
+document.querySelectorAll('.btn').forEach((b) => {
+  b.dataset.label = b.textContent;
+});
 
 // Fill the sample article display and the rewriter textarea.
 document.getElementById('article-content').textContent = ARTICLE;
@@ -77,39 +83,43 @@ document.getElementById('rw-input').value = ARTICLE;
 // ── Tab navigation ────────────────────────────────────────────────────────────
 
 function activateTab(name) {
-  document.querySelectorAll('[role="tab"]').forEach(b => {
+  document.querySelectorAll('[role="tab"]').forEach((b) => {
     const active = b.dataset.tab === name;
     b.classList.toggle('active', active);
     b.setAttribute('aria-selected', active);
     b.tabIndex = active ? 0 : -1;
   });
-  document.querySelectorAll('[role="tabpanel"]').forEach(p => {
+  document.querySelectorAll('[role="tabpanel"]').forEach((p) => {
     p.classList.toggle('active', p.id === 'tab-' + name);
   });
 }
 
 function tabFromHash() {
-  const hash  = location.hash.slice(1);
-  const names = [...document.querySelectorAll('[role="tab"]')].map(b => b.dataset.tab);
+  const hash = location.hash.slice(1);
+  const names = [...document.querySelectorAll('[role="tab"]')].map(
+    (b) => b.dataset.tab
+  );
   return names.includes(hash) ? hash : names[0];
 }
 
 activateTab(tabFromHash());
 window.addEventListener('hashchange', () => activateTab(tabFromHash()));
 
-document.querySelectorAll('[role="tab"]').forEach(btn => {
-  btn.addEventListener('click', () => { location.hash = btn.dataset.tab; });
+document.querySelectorAll('[role="tab"]').forEach((btn) => {
+  btn.addEventListener('click', () => {
+    location.hash = btn.dataset.tab;
+  });
 });
 
-document.querySelector('[role="tablist"]').addEventListener('keydown', e => {
+document.querySelector('[role="tablist"]').addEventListener('keydown', (e) => {
   const tabs = [...document.querySelectorAll('[role="tab"]')];
-  const idx  = tabs.indexOf(document.activeElement);
+  const idx = tabs.indexOf(document.activeElement);
   if (idx === -1) return;
   let next = idx;
-  if      (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
-  else if (e.key === 'ArrowLeft')  next = (idx - 1 + tabs.length) % tabs.length;
-  else if (e.key === 'Home')       next = 0;
-  else if (e.key === 'End')        next = tabs.length - 1;
+  if (e.key === 'ArrowRight') next = (idx + 1) % tabs.length;
+  else if (e.key === 'ArrowLeft') next = (idx - 1 + tabs.length) % tabs.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = tabs.length - 1;
   else return;
   e.preventDefault();
   tabs[next].focus();

@@ -16,14 +16,14 @@ async function checkAvailability(target) {
 
 checkAvailability('es');
 
-document.getElementById('tr-target').addEventListener('change', e => {
+document.getElementById('tr-target').addEventListener('change', (e) => {
   checkAvailability(e.target.value);
 });
 
 document.getElementById('tr-btn').addEventListener('click', async () => {
-  const btn    = document.getElementById('tr-btn');
-  const out    = document.getElementById('tr-out');
-  const prog   = document.getElementById('tr-progress');
+  const btn = document.getElementById('tr-btn');
+  const out = document.getElementById('tr-out');
+  const prog = document.getElementById('tr-progress');
   const target = document.getElementById('tr-target').value;
 
   busy(btn, true);

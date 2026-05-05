@@ -1,276 +1,431 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Built-in AI Workshop — Starter</title>
-  <style>:root { --accent: #34a853; }</style>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Built-in AI Workshop — Starter</title>
+    <style>
+      :root {
+        --accent: #34a853;
+      }
+    </style>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Chrome Built-in AI Workshop</h1>
+      <span class="badge">STARTER</span>
+    </header>
 
-<header>
-  <h1>Chrome Built-in AI Workshop</h1>
-  <span class="badge">STARTER</span>
-</header>
+    <div class="container">
+      <details class="article-box">
+        <summary>
+          📄 Sample article — "Barcelona: Gaudí, Seafood, Ramblas, and a Few
+          Things to Watch Out For"
+        </summary>
+        <pre id="article-content"></pre>
+      </details>
 
-<div class="container">
+      <nav class="tabs" role="tablist" aria-label="API steps">
+        <button
+          class="tab-btn active"
+          role="tab"
+          id="tab-btn-summarizer"
+          data-tab="summarizer"
+          aria-controls="tab-summarizer"
+          aria-selected="true"
+        >
+          1. Summarizer
+        </button>
+        <button
+          class="tab-btn"
+          role="tab"
+          id="tab-btn-prompt-s"
+          data-tab="prompt-s"
+          aria-controls="tab-prompt-s"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          2. Prompt (Structured)
+        </button>
+        <button
+          class="tab-btn"
+          role="tab"
+          id="tab-btn-prompt-m"
+          data-tab="prompt-m"
+          aria-controls="tab-prompt-m"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          3. Prompt (Multimodal)
+        </button>
+        <button
+          class="tab-btn"
+          role="tab"
+          id="tab-btn-writer"
+          data-tab="writer"
+          aria-controls="tab-writer"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          4. Writer
+        </button>
+        <button
+          class="tab-btn"
+          role="tab"
+          id="tab-btn-rewriter"
+          data-tab="rewriter"
+          aria-controls="tab-rewriter"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          5. Rewriter
+        </button>
+        <button
+          class="tab-btn"
+          role="tab"
+          id="tab-btn-translator"
+          data-tab="translator"
+          aria-controls="tab-translator"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          6. Translator
+        </button>
+      </nav>
 
-  <details class="article-box">
-    <summary>📄 Sample article — "Barcelona: Gaudí, Seafood, Ramblas, and a Few Things to Watch Out For"</summary>
-    <pre id="article-content"></pre>
-  </details>
-
-  <nav class="tabs" role="tablist" aria-label="API steps">
-    <button class="tab-btn active" role="tab" id="tab-btn-summarizer" data-tab="summarizer" aria-controls="tab-summarizer" aria-selected="true">1. Summarizer</button>
-    <button class="tab-btn" role="tab" id="tab-btn-prompt-s" data-tab="prompt-s" aria-controls="tab-prompt-s" aria-selected="false" tabindex="-1">2. Prompt (Structured)</button>
-    <button class="tab-btn" role="tab" id="tab-btn-prompt-m" data-tab="prompt-m" aria-controls="tab-prompt-m" aria-selected="false" tabindex="-1">3. Prompt (Multimodal)</button>
-    <button class="tab-btn" role="tab" id="tab-btn-writer" data-tab="writer" aria-controls="tab-writer" aria-selected="false" tabindex="-1">4. Writer</button>
-    <button class="tab-btn" role="tab" id="tab-btn-rewriter" data-tab="rewriter" aria-controls="tab-rewriter" aria-selected="false" tabindex="-1">5. Rewriter</button>
-    <button class="tab-btn" role="tab" id="tab-btn-translator" data-tab="translator" aria-controls="tab-translator" aria-selected="false" tabindex="-1">6. Translator</button>
-  </nav>
-
-  <!-- 1. SUMMARIZER -->
-  <div class="panel active" id="tab-summarizer" role="tabpanel" aria-labelledby="tab-btn-summarizer">
-    <div class="card">
-      <div class="card-header">
-        <h2>Summarizer API</h2>
-        <span class="avail-badge avail-unknown" id="sum-badge">checking…</span>
-      </div>
-      <p class="card-desc">
-        Condenses the sample article. Choose the output <em>type</em> and <em>length</em>, then
-        click Summarize. Streams the result via <code>summarizeStreaming()</code>.
-      </p>
-      <div class="controls">
-        <div class="ctrl">
-          <label>Type</label>
-          <select id="sum-type">
-            <option value="headline">headline</option>
-            <option value="teaser">teaser</option>
-            <option value="key-points" selected>key-points</option>
-            <option value="tldr">tldr</option>
-          </select>
+      <!-- 1. SUMMARIZER -->
+      <div
+        class="panel active"
+        id="tab-summarizer"
+        role="tabpanel"
+        aria-labelledby="tab-btn-summarizer"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Summarizer API</h2>
+            <span class="avail-badge avail-unknown" id="sum-badge"
+              >checking…</span
+            >
+          </div>
+          <p class="card-desc">
+            Condenses the sample article. Choose the output <em>type</em> and
+            <em>length</em>, then click Summarize. Streams the result via
+            <code>summarizeStreaming()</code>.
+          </p>
+          <div class="controls">
+            <div class="ctrl">
+              <label>Type</label>
+              <select id="sum-type">
+                <option value="headline">headline</option>
+                <option value="teaser">teaser</option>
+                <option value="key-points" selected>key-points</option>
+                <option value="tldr">tldr</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <label>Length</label>
+              <select id="sum-length">
+                <option value="short" selected>short</option>
+                <option value="medium">medium</option>
+                <option value="long">long</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <label>Format</label>
+              <select id="sum-format">
+                <option value="plain-text" selected>plain-text</option>
+                <option value="markdown">markdown</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="sum-btn">✨ Summarize</button>
+          </div>
+          <div class="dl-progress" id="sum-progress">
+            <progress></progress>
+            <span>Downloading model…</span>
+          </div>
+          <div class="out-label">Output</div>
+          <div class="out empty" id="sum-out">Output will appear here…</div>
         </div>
-        <div class="ctrl">
-          <label>Length</label>
-          <select id="sum-length">
-            <option value="short" selected>short</option>
-            <option value="medium">medium</option>
-            <option value="long">long</option>
-          </select>
+      </div>
+
+      <!-- 2. PROMPT — STRUCTURED OUTPUT -->
+      <div
+        class="panel"
+        id="tab-prompt-s"
+        role="tabpanel"
+        aria-labelledby="tab-btn-prompt-s"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Prompt API — Structured Output</h2>
+            <span class="avail-badge avail-unknown" id="ps-badge"
+              >checking…</span
+            >
+          </div>
+          <p class="card-desc">
+            Generates tags for the article. A
+            <code>responseConstraint</code> (JSON Schema with an
+            <code>enum</code>) guarantees the model only picks from the
+            predefined list.
+          </p>
+          <p style="font-size: 0.84rem; margin-bottom: 14px; color: #5f6368">
+            Allowed tags:
+            <strong
+              >Adventure · Barcelona · Beach · City · Coast · Culture · Europe ·
+              Food · Gaudi · History · Relaxation · Sagrada Familia · Spain ·
+              Travel</strong
+            >
+          </p>
+          <button class="btn btn-primary" id="ps-btn">✨ Generate Tags</button>
+          <div class="dl-progress" id="ps-progress">
+            <progress></progress>
+            <span>Downloading model…</span>
+          </div>
+          <div class="out-label">Generated Tags</div>
+          <div class="tags-out" id="ps-out">
+            <span style="color: #9aa0a6; font-style: italic; font-size: 0.88rem"
+              >Tags will appear here…</span
+            >
+          </div>
         </div>
-        <div class="ctrl">
-          <label>Format</label>
-          <select id="sum-format">
-            <option value="plain-text" selected>plain-text</option>
-            <option value="markdown">markdown</option>
-          </select>
+      </div>
+
+      <!-- 3. PROMPT — MULTIMODAL -->
+      <div
+        class="panel"
+        id="tab-prompt-m"
+        role="tabpanel"
+        aria-labelledby="tab-btn-prompt-m"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Prompt API — Multimodal Input</h2>
+            <span class="avail-badge avail-unknown" id="pm-badge"
+              >checking…</span
+            >
+          </div>
+          <p class="card-desc">
+            Upload a travel photo. The model generates accessible
+            <strong>alt text</strong> and an engaging
+            <strong>caption</strong> using <code>{ type: "image" }</code> input
+            and a <code>responseConstraint</code>.
+          </p>
+          <input
+            type="file"
+            accept="image/*"
+            id="img-input"
+            style="display: none"
+          />
+          <div class="img-upload" id="img-area">
+            <p>📸 Click or drag &amp; drop a travel photo here</p>
+          </div>
+          <button class="btn btn-primary" id="pm-btn" disabled>
+            ✨ Generate Alt Text &amp; Caption
+          </button>
+          <div class="dl-progress" id="pm-progress">
+            <progress></progress>
+            <span>Downloading model…</span>
+          </div>
+          <div class="out-label">Alt Text</div>
+          <div class="out empty" id="pm-alt">Will appear here…</div>
+          <div class="out-label" style="margin-top: 10px">Caption</div>
+          <div class="out empty" id="pm-cap">Will appear here…</div>
         </div>
-        <button class="btn btn-primary" id="sum-btn">✨ Summarize</button>
       </div>
-      <div class="dl-progress" id="sum-progress">
-        <progress></progress>
-        <span>Downloading model…</span>
-      </div>
-      <div class="out-label">Output</div>
-      <div class="out empty" id="sum-out">Output will appear here…</div>
-    </div>
-  </div>
 
-  <!-- 2. PROMPT — STRUCTURED OUTPUT -->
-  <div class="panel" id="tab-prompt-s" role="tabpanel" aria-labelledby="tab-btn-prompt-s">
-    <div class="card">
-      <div class="card-header">
-        <h2>Prompt API — Structured Output</h2>
-        <span class="avail-badge avail-unknown" id="ps-badge">checking…</span>
-      </div>
-      <p class="card-desc">
-        Generates tags for the article. A <code>responseConstraint</code> (JSON Schema with an
-        <code>enum</code>) guarantees the model only picks from the predefined list.
-      </p>
-      <p style="font-size:.84rem;margin-bottom:14px;color:#5f6368;">
-        Allowed tags: <strong>Adventure · Barcelona · Beach · City · Coast · Culture · Europe ·
-        Food · Gaudi · History · Relaxation · Sagrada Familia · Spain · Travel</strong>
-      </p>
-      <button class="btn btn-primary" id="ps-btn">✨ Generate Tags</button>
-      <div class="dl-progress" id="ps-progress">
-        <progress></progress>
-        <span>Downloading model…</span>
-      </div>
-      <div class="out-label">Generated Tags</div>
-      <div class="tags-out" id="ps-out">
-        <span style="color:#9aa0a6;font-style:italic;font-size:.88rem;">Tags will appear here…</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- 3. PROMPT — MULTIMODAL -->
-  <div class="panel" id="tab-prompt-m" role="tabpanel" aria-labelledby="tab-btn-prompt-m">
-    <div class="card">
-      <div class="card-header">
-        <h2>Prompt API — Multimodal Input</h2>
-        <span class="avail-badge avail-unknown" id="pm-badge">checking…</span>
-      </div>
-      <p class="card-desc">
-        Upload a travel photo. The model generates accessible <strong>alt text</strong> and an
-        engaging <strong>caption</strong> using <code>{ type: "image" }</code> input and a
-        <code>responseConstraint</code>.
-      </p>
-      <input type="file" accept="image/*" id="img-input" style="display:none">
-      <div class="img-upload" id="img-area"><p>📸 Click or drag &amp; drop a travel photo here</p></div>
-      <button class="btn btn-primary" id="pm-btn" disabled>✨ Generate Alt Text &amp; Caption</button>
-      <div class="dl-progress" id="pm-progress">
-        <progress></progress>
-        <span>Downloading model…</span>
-      </div>
-      <div class="out-label">Alt Text</div>
-      <div class="out empty" id="pm-alt">Will appear here…</div>
-      <div class="out-label" style="margin-top:10px;">Caption</div>
-      <div class="out empty" id="pm-cap">Will appear here…</div>
-    </div>
-  </div>
-
-  <!-- 4. WRITER -->
-  <div class="panel" id="tab-writer" role="tabpanel" aria-labelledby="tab-btn-writer">
-    <div class="card">
-      <div class="card-header">
-        <h2>Writer API</h2>
-        <span class="avail-badge avail-unknown" id="wr-badge">checking…</span>
-      </div>
-      <p class="card-desc">
-        Expands bullet-point notes into a full travel blog post via
-        <code>Writer.create()</code> and <code>writeStreaming()</code>.
-      </p>
-      <label style="font-size:.7rem;font-weight:700;color:#5f6368;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Bullet Points / Notes</label>
-      <textarea id="wr-input" rows="5">- First time in Barcelona — overwhelming in the best way
+      <!-- 4. WRITER -->
+      <div
+        class="panel"
+        id="tab-writer"
+        role="tabpanel"
+        aria-labelledby="tab-btn-writer"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Writer API</h2>
+            <span class="avail-badge avail-unknown" id="wr-badge"
+              >checking…</span
+            >
+          </div>
+          <p class="card-desc">
+            Expands bullet-point notes into a full travel blog post via
+            <code>Writer.create()</code> and <code>writeStreaming()</code>.
+          </p>
+          <label
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              color: #5f6368;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+              display: block;
+              margin-bottom: 6px;
+            "
+            >Bullet Points / Notes</label
+          >
+          <textarea id="wr-input" rows="5">
+- First time in Barcelona — overwhelming in the best way
 - Tried to visit Parc Güell but couldn't get tickets (booked too late!)
 - Amazing seafood at a tiny tapas bar near Barceloneta beach
 - Sagrada Família was absolutely breathtaking — worth every euro
-- Pickpocket attempt on the Ramblas — caught it just in time</textarea>
-      <div class="controls">
-        <div class="ctrl">
-          <label>Tone</label>
-          <select id="wr-tone">
-            <option value="formal">formal</option>
-            <option value="neutral" selected>neutral</option>
-            <option value="casual">casual</option>
-          </select>
+- Pickpocket attempt on the Ramblas — caught it just in time</textarea
+          >
+          <div class="controls">
+            <div class="ctrl">
+              <label>Tone</label>
+              <select id="wr-tone">
+                <option value="formal">formal</option>
+                <option value="neutral" selected>neutral</option>
+                <option value="casual">casual</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <label>Length</label>
+              <select id="wr-length">
+                <option value="short">short</option>
+                <option value="medium" selected>medium</option>
+                <option value="long">long</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="wr-btn">✨ Write Post</button>
+          </div>
+          <div class="dl-progress" id="wr-progress">
+            <progress></progress>
+            <span>Downloading model…</span>
+          </div>
+          <div class="out-label">Generated Post</div>
+          <div class="out empty" id="wr-out">Output will appear here…</div>
         </div>
-        <div class="ctrl">
-          <label>Length</label>
-          <select id="wr-length">
-            <option value="short">short</option>
-            <option value="medium" selected>medium</option>
-            <option value="long">long</option>
-          </select>
+      </div>
+
+      <!-- 5. REWRITER -->
+      <div
+        class="panel"
+        id="tab-rewriter"
+        role="tabpanel"
+        aria-labelledby="tab-btn-rewriter"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Rewriter API</h2>
+            <span class="avail-badge avail-unknown" id="rw-badge"
+              >checking…</span
+            >
+          </div>
+          <p class="card-desc">
+            Rewrites the article with a different tone or length via
+            <code>Rewriter.create()</code> and <code>rewriteStreaming()</code>.
+          </p>
+          <label
+            style="
+              font-size: 0.7rem;
+              font-weight: 700;
+              color: #5f6368;
+              text-transform: uppercase;
+              letter-spacing: 0.06em;
+              display: block;
+              margin-bottom: 6px;
+            "
+            >Text to Rewrite</label
+          >
+          <textarea id="rw-input" rows="8"></textarea>
+          <div class="controls">
+            <div class="ctrl">
+              <label>Tone</label>
+              <select id="rw-tone">
+                <option value="as-is" selected>as-is</option>
+                <option value="more-formal">more-formal</option>
+                <option value="more-casual">more-casual</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <label>Length</label>
+              <select id="rw-length">
+                <option value="as-is" selected>as-is</option>
+                <option value="shorter">shorter</option>
+                <option value="longer">longer</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="rw-btn">✨ Rewrite</button>
+          </div>
+          <div class="dl-progress" id="rw-progress">
+            <progress></progress>
+            <span>Downloading model…</span>
+          </div>
+          <div class="out-label">Rewritten Text</div>
+          <div class="out empty" id="rw-out">Output will appear here…</div>
         </div>
-        <button class="btn btn-primary" id="wr-btn">✨ Write Post</button>
       </div>
-      <div class="dl-progress" id="wr-progress">
-        <progress></progress>
-        <span>Downloading model…</span>
+
+      <!-- 6. TRANSLATOR -->
+      <div
+        class="panel"
+        id="tab-translator"
+        role="tabpanel"
+        aria-labelledby="tab-btn-translator"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Translator API</h2>
+            <span class="avail-badge avail-unknown" id="tr-badge"
+              >checking…</span
+            >
+          </div>
+          <p class="card-desc">
+            Translates the article via <code>Translator.create()</code> and
+            <code>translate()</code>. A language pack download may be needed.
+          </p>
+          <div class="controls">
+            <div class="ctrl">
+              <label>Source</label>
+              <select disabled>
+                <option>English (en)</option>
+              </select>
+            </div>
+            <div class="ctrl">
+              <label>Target Language</label>
+              <select id="tr-target">
+                <option value="es">Spanish (es)</option>
+                <option value="fr">French (fr)</option>
+                <option value="de">German (de)</option>
+                <option value="it">Italian (it)</option>
+                <option value="pt">Portuguese (pt)</option>
+                <option value="ja">Japanese (ja)</option>
+                <option value="zh">Chinese (zh)</option>
+                <option value="ko">Korean (ko)</option>
+                <option value="nl">Dutch (nl)</option>
+                <option value="pl">Polish (pl)</option>
+              </select>
+            </div>
+            <button class="btn btn-primary" id="tr-btn">✨ Translate</button>
+          </div>
+          <div class="dl-progress" id="tr-progress">
+            <progress></progress>
+            <span>Downloading language pack…</span>
+          </div>
+          <div class="out-label">Translation</div>
+          <div class="out empty" id="tr-out">Output will appear here…</div>
+        </div>
       </div>
-      <div class="out-label">Generated Post</div>
-      <div class="out empty" id="wr-out">Output will appear here…</div>
     </div>
-  </div>
 
-  <!-- 5. REWRITER -->
-  <div class="panel" id="tab-rewriter" role="tabpanel" aria-labelledby="tab-btn-rewriter">
-    <div class="card">
-      <div class="card-header">
-        <h2>Rewriter API</h2>
-        <span class="avail-badge avail-unknown" id="rw-badge">checking…</span>
-      </div>
-      <p class="card-desc">
-        Rewrites the article with a different tone or length via
-        <code>Rewriter.create()</code> and <code>rewriteStreaming()</code>.
-      </p>
-      <label style="font-size:.7rem;font-weight:700;color:#5f6368;text-transform:uppercase;letter-spacing:.06em;display:block;margin-bottom:6px;">Text to Rewrite</label>
-      <textarea id="rw-input" rows="8"></textarea>
-      <div class="controls">
-        <div class="ctrl">
-          <label>Tone</label>
-          <select id="rw-tone">
-            <option value="as-is" selected>as-is</option>
-            <option value="more-formal">more-formal</option>
-            <option value="more-casual">more-casual</option>
-          </select>
-        </div>
-        <div class="ctrl">
-          <label>Length</label>
-          <select id="rw-length">
-            <option value="as-is" selected>as-is</option>
-            <option value="shorter">shorter</option>
-            <option value="longer">longer</option>
-          </select>
-        </div>
-        <button class="btn btn-primary" id="rw-btn">✨ Rewrite</button>
-      </div>
-      <div class="dl-progress" id="rw-progress">
-        <progress></progress>
-        <span>Downloading model…</span>
-      </div>
-      <div class="out-label">Rewritten Text</div>
-      <div class="out empty" id="rw-out">Output will appear here…</div>
-    </div>
-  </div>
+    <footer>
+      Chrome Built-in AI Workshop ·
+      <a href="https://developer.chrome.com/docs/ai/built-in" target="_blank"
+        >docs</a
+      >
+      ·
+      <a href="https://github.com/GoogleChromeLabs/web-ai-demos" target="_blank"
+        >demos</a
+      >
+    </footer>
 
-  <!-- 6. TRANSLATOR -->
-  <div class="panel" id="tab-translator" role="tabpanel" aria-labelledby="tab-btn-translator">
-    <div class="card">
-      <div class="card-header">
-        <h2>Translator API</h2>
-        <span class="avail-badge avail-unknown" id="tr-badge">checking…</span>
-      </div>
-      <p class="card-desc">
-        Translates the article via <code>Translator.create()</code> and
-        <code>translate()</code>. A language pack download may be needed.
-      </p>
-      <div class="controls">
-        <div class="ctrl">
-          <label>Source</label>
-          <select disabled><option>English (en)</option></select>
-        </div>
-        <div class="ctrl">
-          <label>Target Language</label>
-          <select id="tr-target">
-            <option value="es">Spanish (es)</option>
-            <option value="fr">French (fr)</option>
-            <option value="de">German (de)</option>
-            <option value="it">Italian (it)</option>
-            <option value="pt">Portuguese (pt)</option>
-            <option value="ja">Japanese (ja)</option>
-            <option value="zh">Chinese (zh)</option>
-            <option value="ko">Korean (ko)</option>
-            <option value="nl">Dutch (nl)</option>
-            <option value="pl">Polish (pl)</option>
-          </select>
-        </div>
-        <button class="btn btn-primary" id="tr-btn">✨ Translate</button>
-      </div>
-      <div class="dl-progress" id="tr-progress">
-        <progress></progress>
-        <span>Downloading language pack…</span>
-      </div>
-      <div class="out-label">Translation</div>
-      <div class="out empty" id="tr-out">Output will appear here…</div>
-    </div>
-  </div>
-
-</div>
-
-<footer>
-  Chrome Built-in AI Workshop ·
-  <a href="https://developer.chrome.com/docs/ai/built-in" target="_blank">docs</a> ·
-  <a href="https://github.com/GoogleChromeLabs/web-ai-demos" target="_blank">demos</a>
-</footer>
-
-<script type="module" src="step-1-summarizer.js"></script>
-<script type="module" src="step-2-prompt-structured.js"></script>
-<script type="module" src="step-3-prompt-multimodal.js"></script>
-<script type="module" src="step-4-writer.js"></script>
-<script type="module" src="step-5-rewriter.js"></script>
-<script type="module" src="step-6-translator.js"></script>
-</body>
+    <script type="module" src="step-1-summarizer.js"></script>
+    <script type="module" src="step-2-prompt-structured.js"></script>
+    <script type="module" src="step-3-prompt-multimodal.js"></script>
+    <script type="module" src="step-4-writer.js"></script>
+    <script type="module" src="step-5-rewriter.js"></script>
+    <script type="module" src="step-6-translator.js"></script>
+  </body>
 </html>

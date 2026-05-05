@@ -4,7 +4,7 @@ import { setBadge, setOut, makeMonitor, busy } from './shared.js';
 const ALT_CAPTION_SCHEMA = {
   type: 'object',
   properties: {
-    alt:     { type: 'string' },
+    alt: { type: 'string' },
     caption: { type: 'string' },
   },
   required: ['alt', 'caption'],
@@ -33,19 +33,26 @@ const ALT_CAPTION_SCHEMA = {
 
 // Image upload — store the loaded HTMLImageElement for use in prompt().
 let uploadedImg = null;
-const imgInput  = document.getElementById('img-input');
-const imgArea   = document.getElementById('img-area');
+const imgInput = document.getElementById('img-input');
+const imgArea = document.getElementById('img-area');
 
 imgArea.addEventListener('click', () => imgInput.click());
-imgArea.addEventListener('dragover', e => { e.preventDefault(); imgArea.style.borderColor = '#1a73e8'; });
-imgArea.addEventListener('dragleave', () => { imgArea.style.borderColor = ''; });
-imgArea.addEventListener('drop', e => {
+imgArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  imgArea.style.borderColor = '#1a73e8';
+});
+imgArea.addEventListener('dragleave', () => {
+  imgArea.style.borderColor = '';
+});
+imgArea.addEventListener('drop', (e) => {
   e.preventDefault();
   imgArea.style.borderColor = '';
   const f = e.dataTransfer.files[0];
   if (f?.type.startsWith('image/')) loadImg(f);
 });
-imgInput.addEventListener('change', () => { if (imgInput.files[0]) loadImg(imgInput.files[0]); });
+imgInput.addEventListener('change', () => {
+  if (imgInput.files[0]) loadImg(imgInput.files[0]);
+});
 
 function loadImg(file) {
   const url = URL.createObjectURL(file);
@@ -59,9 +66,9 @@ function loadImg(file) {
 }
 
 document.getElementById('pm-btn').addEventListener('click', async () => {
-  const btn  = document.getElementById('pm-btn');
-  const alt  = document.getElementById('pm-alt');
-  const cap  = document.getElementById('pm-cap');
+  const btn = document.getElementById('pm-btn');
+  const alt = document.getElementById('pm-alt');
+  const cap = document.getElementById('pm-cap');
   const prog = document.getElementById('pm-progress');
   if (!uploadedImg) return;
 

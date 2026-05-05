@@ -5,8 +5,11 @@ import { setBadge, setOut, makeMonitor, busy } from '../shared.js';
   const badge = document.getElementById('wr-badge');
   try {
     const status = await Writer.availability({
-      tone: 'neutral', format: 'plain-text', length: 'medium',
-      expectedInputLanguages: ['en'], outputLanguage: 'en',
+      tone: 'neutral',
+      format: 'plain-text',
+      length: 'medium',
+      expectedInputLanguages: ['en'],
+      outputLanguage: 'en',
     });
     setBadge(badge, status);
   } catch {
@@ -15,12 +18,12 @@ import { setBadge, setOut, makeMonitor, busy } from '../shared.js';
 })();
 
 document.getElementById('wr-btn').addEventListener('click', async () => {
-  const btn    = document.getElementById('wr-btn');
-  const out    = document.getElementById('wr-out');
-  const prog   = document.getElementById('wr-progress');
-  const tone   = document.getElementById('wr-tone').value;
+  const btn = document.getElementById('wr-btn');
+  const out = document.getElementById('wr-out');
+  const prog = document.getElementById('wr-progress');
+  const tone = document.getElementById('wr-tone').value;
   const length = document.getElementById('wr-length').value;
-  const input  = document.getElementById('wr-input').value.trim();
+  const input = document.getElementById('wr-input').value.trim();
   if (!input) return;
 
   busy(btn, true);
@@ -32,7 +35,8 @@ document.getElementById('wr-btn').addEventListener('click', async () => {
       tone,
       length,
       format: 'plain-text',
-      sharedContext: 'The user provides bullet points or notes about a trip. Expand them into a vivid travel blog post.',
+      sharedContext:
+        'The user provides bullet points or notes about a trip. Expand them into a vivid travel blog post.',
       expectedInputLanguages: ['en'],
       outputLanguage: 'en',
       monitor: makeMonitor(prog),

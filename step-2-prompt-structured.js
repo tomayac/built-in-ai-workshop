@@ -1,8 +1,20 @@
 import { ARTICLE, setBadge, makeMonitor, busy } from './shared.js';
 
 const TAGS_ENUM = [
-  'Adventure', 'Barcelona', 'Beach', 'City', 'Coast', 'Culture',
-  'Europe', 'Food', 'Gaudi', 'History', 'Relaxation', 'Sagrada Familia', 'Spain', 'Travel',
+  'Adventure',
+  'Barcelona',
+  'Beach',
+  'City',
+  'Coast',
+  'Culture',
+  'Europe',
+  'Food',
+  'Gaudi',
+  'History',
+  'Relaxation',
+  'Sagrada Familia',
+  'Spain',
+  'Travel',
 ];
 
 // This JSON Schema constrains the model — it can only output tags from TAGS_ENUM.
@@ -37,12 +49,13 @@ const TAG_SCHEMA = {
 })();
 
 document.getElementById('ps-btn').addEventListener('click', async () => {
-  const btn  = document.getElementById('ps-btn');
-  const out  = document.getElementById('ps-out');
+  const btn = document.getElementById('ps-btn');
+  const out = document.getElementById('ps-out');
   const prog = document.getElementById('ps-progress');
 
   busy(btn, true);
-  out.innerHTML = '<span style="color:#9aa0a6;font-style:italic;font-size:.88rem;">⏳ Generating tags…</span>';
+  out.innerHTML =
+    '<span style="color:#9aa0a6;font-style:italic;font-size:.88rem;">⏳ Generating tags…</span>';
 
   try {
     // ── TODO 5: Create a LanguageModel session ──────────────────────────────

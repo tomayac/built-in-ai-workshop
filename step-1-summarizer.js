@@ -20,10 +20,10 @@ import { ARTICLE, setBadge, setOut, makeMonitor, busy } from './shared.js';
 })();
 
 document.getElementById('sum-btn').addEventListener('click', async () => {
-  const btn    = document.getElementById('sum-btn');
-  const out    = document.getElementById('sum-out');
-  const prog   = document.getElementById('sum-progress');
-  const type   = document.getElementById('sum-type').value;
+  const btn = document.getElementById('sum-btn');
+  const out = document.getElementById('sum-out');
+  const prog = document.getElementById('sum-progress');
+  const type = document.getElementById('sum-type').value;
   const length = document.getElementById('sum-length').value;
   const format = document.getElementById('sum-format').value;
 
