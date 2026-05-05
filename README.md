@@ -17,6 +17,7 @@ different on-device AI APIs:
 | 4    | **Writer**                     | Expands bullet-point notes into a full blog post                                 |
 | 5    | **Rewriter**                   | Rewrites the article with a different tone or length                             |
 | 6    | **Translator**                 | Translates the article into one of ten target languages                          |
+| 7    | **Polyfills**                  | Runs the Writer API in any browser via Gemini or Transformers.js                 |
 
 ## Requirements
 
@@ -25,6 +26,9 @@ different on-device AI APIs:
   [Chrome Built-in AI setup guide](https://developer.chrome.com/docs/ai/built-in)
   to enable the experimental flags and download the on-device model.
 - No build step, no npm install — the app is plain HTML + ES modules.
+- **Step 7 only:** a free
+  [Gemini API key](https://aistudio.google.com/app/apikey) (Gemini backend) or a
+  WebGPU-capable browser (Transformers.js backend).
 
 ## How to run
 
@@ -62,6 +66,7 @@ step-3-prompt-multimodal.js
 step-4-writer.js
 step-5-rewriter.js
 step-6-translator.js
+step-7-polyfills.js
 ```
 
 Completed implementations
@@ -74,6 +79,7 @@ solution/
   step-4-writer.js
   step-5-rewriter.js
   step-6-translator.js
+  step-7-polyfills.js
 ```
 
 Shared article text and UI helpers
@@ -95,3 +101,6 @@ the TODOs in order; when you're stuck, peek at the matching file in `solution/`.
 
 - [Chrome Built-in AI docs](https://developer.chrome.com/docs/ai/built-in)
 - [Web AI demos (GoogleChromeLabs)](https://github.com/GoogleChromeLabs/web-ai-demos)
+- [prompt-api-polyfill (npm)](https://www.npmjs.com/package/prompt-api-polyfill)
+- [built-in-ai-task-apis-polyfills (npm)](https://www.npmjs.com/package/built-in-ai-task-apis-polyfills)
+- [Get a Gemini API key](https://aistudio.google.com/app/apikey)

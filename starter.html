@@ -92,6 +92,17 @@
         >
           6. Translator
         </button>
+        <button
+          class="tab-button"
+          role="tab"
+          id="tab-button-polyfills"
+          data-tab="polyfills"
+          aria-controls="tab-polyfills"
+          aria-selected="false"
+          tabindex="-1"
+        >
+          7. Polyfills
+        </button>
       </nav>
 
       <!-- 1. SUMMARIZER -->
@@ -390,6 +401,106 @@
         </div>
       </div>
 
+      <!-- 7. POLYFILLS -->
+      <div
+        class="panel"
+        id="tab-polyfills"
+        role="tabpanel"
+        aria-labelledby="tab-button-polyfills"
+      >
+        <div class="card">
+          <div class="card-header">
+            <h2>Polyfills — Universal Compatibility</h2>
+            <span
+              class="availability-badge availability-unknown"
+              id="polyfills-badge"
+              >not yet run</span
+            >
+          </div>
+          <p class="card-description">
+            The same Built-in AI APIs work in any browser via
+            <a
+              href="https://www.npmjs.com/package/prompt-api-polyfill"
+              target="_blank"
+              rel="noopener"
+              ><code>prompt-api-polyfill</code></a
+            >
+            and
+            <a
+              href="https://www.npmjs.com/package/built-in-ai-task-apis-polyfills"
+              target="_blank"
+              rel="noopener"
+              ><code>built-in-ai-task-apis-polyfills</code></a
+            >. Polyfills are loaded <em>only</em> when native support is absent
+            — on Chrome with built-in AI the native APIs win automatically. Uses
+            the <strong>Writer API</strong> (not yet natively shipping) to write
+            a social media post from the sample article.
+          </p>
+          <div class="controls" style="margin-bottom: 14px">
+            <div class="control">
+              <label>Backend</label>
+              <select id="polyfills-backend">
+                <option value="gemini">Gemini (cloud)</option>
+                <option value="transformers">
+                  Transformers.js (in-browser)
+                </option>
+              </select>
+            </div>
+          </div>
+          <div id="polyfills-key-row" style="margin-bottom: 14px">
+            <div class="control" style="width: 100%">
+              <label
+                >Gemini API Key — get one at
+                <a
+                  href="https://aistudio.google.com/app/apikey"
+                  target="_blank"
+                  rel="noopener"
+                  >aistudio.google.com/app/apikey</a
+                ></label
+              >
+              <input
+                type="password"
+                id="polyfills-api-key"
+                placeholder="AIza…"
+                style="
+                  padding: 6px 8px;
+                  border: 1.5px solid #dadce0;
+                  border-radius: 6px;
+                  font-size: 0.86rem;
+                  background: white;
+                  color: #202124;
+                  width: 100%;
+                "
+              />
+            </div>
+          </div>
+          <p
+            id="polyfills-transformers-note"
+            style="
+              display: none;
+              font-size: 0.84rem;
+              color: #5f6368;
+              margin-bottom: 14px;
+              padding: 10px 12px;
+              background: #f8f9fa;
+              border-radius: 6px;
+              border: 1.5px solid #e8eaed;
+            "
+          >
+            Transformers.js runs entirely in your browser using WebGPU. The
+            first run downloads a model (hundreds of MB) — subsequent runs use
+            the browser cache. No API key needed.
+          </p>
+          <button class="button button-primary" id="polyfills-button">
+            ✨ Write via Polyfill
+          </button>
+          <div class="output-label">Output</div>
+          <div class="output empty" id="polyfills-output">
+            Output will appear here…
+          </div>
+        </div>
+      </div>
+
       <!-- 6. TRANSLATOR -->
       <div
         class="panel"
@@ -465,5 +576,6 @@
     <script type="module" src="step-4-writer.js"></script>
     <script type="module" src="step-5-rewriter.js"></script>
     <script type="module" src="step-6-translator.js"></script>
+    <script type="module" src="step-7-polyfills.js"></script>
   </body>
 </html>
