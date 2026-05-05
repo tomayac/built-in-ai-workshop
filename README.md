@@ -41,14 +41,14 @@ python3 -m http.server
 ```
 
 Then open `http://localhost:3000` (or whichever port your server uses) and
-navigate to `starter.html`.
+navigate to `index.html`.
 
 ## Workshop structure
 
 Your working file — open this in the browser
 
 ```
-starter.html
+index.html
 ```
 
 Finished version for reference
