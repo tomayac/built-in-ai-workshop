@@ -21,10 +21,7 @@ different on-device AI APIs:
 
 ## Requirements
 
-- **Chrome 138+** (or a recent Canary build) with Built-in AI enabled.
-- Follow the
-  [Chrome Built-in AI setup guide](https://developer.chrome.com/docs/ai/built-in)
-  to enable the experimental flags and download the on-device model.
+- **Chrome 148+** (or a recent Canary build).
 - No build step, no npm install — the app is plain HTML + ES modules.
 - **Step 7 only:** a free
   [Gemini API key](https://aistudio.google.com/app/apikey) (Gemini backend) or a
@@ -47,15 +44,16 @@ navigate to `starter.html`.
 
 Your working file — open this in the browser
 
-```
-starter.html
-```
+<pre>
+# Be sure to view the version on your local server.
+<code class="language-bash"><a href="https://tomayac.github.io/built-in-ai-workshop/starter.html">starter.html</a>
+</code></pre>
 
 Finished version for reference
 
-```
-solution.html
-```
+<pre>
+<code class="language-bash"><a href="https://tomayac.github.io/built-in-ai-workshop/solution.html">solution.html</a>
+</code></pre>
 
 Starter stubs with TODO comments
 
