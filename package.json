@@ -1,0 +1,22 @@
+{
+  "name": "built-in-ai-workshop",
+  "version": "1.0.0",
+  "description": "A workshop to learn the built-in AI APIs",
+  "keywords": [
+    "built-in-ai"
+  ],
+  "homepage": "https://github.com/tomayac/built-in-ai-workshop#readme",
+  "bugs": {
+    "url": "https://github.com/tomayac/built-in-ai-workshop/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tomayac/built-in-ai-workshop.git"
+  },
+  "license": "Apache-2.0",
+  "author": "Thomas Steiner",
+  "type": "module",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}
