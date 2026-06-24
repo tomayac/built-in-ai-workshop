@@ -43,14 +43,13 @@ navigate to `starter.html`.
 Your working file — open this in the browser
 
 <pre>
-# Be sure to view the version on your local server.
-<code class="language-bash"><a href="https://tomayac.github.io/built-in-ai-workshop/starter.html">starter.html</a>
+<code class="language-bash"><a href="starter.html">starter.html</a>
 </code></pre>
 
 Finished version for reference
 
 <pre>
-<code class="language-bash"><a href="https://tomayac.github.io/built-in-ai-workshop/solution.html">solution.html</a>
+<code class="language-bash"><a href="solution.html">solution.html</a>
 </code></pre>
 
 Starter stubs with TODO comments
