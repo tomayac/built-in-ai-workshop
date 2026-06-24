@@ -32,9 +32,7 @@ different on-device AI APIs:
 Serve the files from a local HTTP server (required for ES modules):
 
 ```bash
-npx serve .
-# or
-python3 -m http.server
+npm start
 ```
 
 Then open `http://localhost:3000` (or whichever port your server uses) and
